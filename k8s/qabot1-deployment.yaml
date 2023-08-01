@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-qabot-1-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-qabot-1
+  template:
+    metadata:
+      labels:
+        app: my-qabot-1
+    spec:
+      containers:
+        - name: my-qabot-1
+          image: your_container_name:version
+          ports:
+            - containerPort: 7860
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-qabot-1-service
+spec:
+  selector:
+    app: my-qabot-1
+  ports:
+    - protocol: TCP
+      port: 7860
+      targetPort: 7860

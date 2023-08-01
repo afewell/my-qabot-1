@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-qabot-1-ingress
+  labels:
+    app: my-qabot-1
+  annotations:
+    projectcontour.io/ingress.class: "contour"
+    kubernetes.io/ingress.class: "contour"
+    projectcontour.io/response-timeout: "120s"
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - my-qabot-1.example.com
+      secretName: my-qabot-1-tls-secret
+  rules:
+    - host: my-qabot-1.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-qabot-1-service
+                port:
+                  number: 7860
